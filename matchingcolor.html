@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Match - Info Page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1);
+    background-size: 300% 300%;
+    animation: gradientMove 10s ease infinite;
+}
+@keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Glass container */
+.container{
+    min-height: 95vh;
+    margin: 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Heading text */
+.container h2{
+    color: #fff;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.container p{
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+/* Bottom navigation */
+.bottom-nav{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display:flex;
+    justify-content:space-around;
+    padding: 20px 0;
+    background: rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.5);
+}
+.bottom-nav i{
+    font-size: 34px;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s, color 0.3s;
+}
+.bottom-nav i:hover{
+    transform: scale(1.2);
+    color: yellow;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Welcome to Color Match!</h2>
+    <p>This is an additional info page. Use the navigation below.</p>
+</div>
+
+<!-- Bottom navigation -->
+<div class="bottom-nav">
+    <i class="fa fa-arrow-left" onclick="goBack()"></i>
+    <i class="fa fa-home" onclick="goHome()"></i>
+</div>
+
+<script>
+function goBack(){window.history.back();}
+function goHome(){window.location.href="color_matching_app.html";}
+</script>
+
+</body>
+</html>

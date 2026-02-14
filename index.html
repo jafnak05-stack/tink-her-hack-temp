@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colour Matching App - AI Based Palette Generator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-palette"></i> Chroma<span class="highlight">Match</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#functions">Functions</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero" class="hero-section">
+        <div class="container hero-content">
+            <h1 class="hero-title">Capture, Detect and Match Colors <br> Instantly using <span
+                    class="gradient-text">AI</span></h1>
+            <p class="hero-subtitle">The ultimate tool for designers and creatives. Generate stunning color palettes
+                from any image in seconds.</p>
+            <div class="hero-buttons">
+                <a href="#cta" class="btn btn-primary">Try Now <i class="fa-solid fa-arrow-right"></i></a>
+                <button id="btn-hero-upload" class="btn btn-secondary"><i class="fa-solid fa-upload"></i> Upload
+                    Image</button>
+            </div>
+        </div>
+        <div class="hero-shape"></div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need to find the perfect color.</p>
+
+            <div class="grid-container">
+                <!-- Camera Capture -->
+                <div class="card feature-card interactive-card" id="btn-camera">
+                    <div class="icon-box"><i class="fa-solid fa-camera"></i></div>
+                    <h3>Camera Capture</h3>
+                    <p>Capture real-world colors instantly using your device's camera.</p>
+                </div>
+                <!-- Image Picker -->
+                <div class="card feature-card interactive-card" id="btn-upload">
+                    <div class="icon-box"><i class="fa-regular fa-image"></i></div>
+                    <h3>Image Picker</h3>
+                    <p>Pick any color from your gallery photos with precision.</p>
+                </div>
+                <!-- AI Detection / Palette (Combined for flow) -->
+                <div class="card feature-card interactive-card" id="btn-palette">
+                    <div class="icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h3>Palette Generator</h3>
+                    <p>Automatic detection of dominant color shades and tones.</p>
+                </div>
+                <!-- Color Codes -->
+                <div class="card feature-card interactive-card" id="btn-codes">
+                    <div class="icon-box"><i class="fa-solid fa-code"></i></div>
+                    <h3>Color Codes</h3>
+                    <p>Get instant HEX, RGB, and CMYK values for any color.</p>
+                </div>
+                <!-- Save Favorites -->
+                <div class="card feature-card interactive-card" id="btn-save">
+                    <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
+                    <h3>Save Favorites</h3>
+                    <p>Curate your personal collection of favorite shades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workspace Section (Hidden by default, shown when image is active) -->
+    <section id="workspace" class="workspace-section hidden">
+        <div class="container">
+            <h2 class="section-title">Color Analysis</h2>
+
+            <div class="workspace-grid">
+                <!-- Image Preview -->
+                <div class="workspace-card image-preview-card">
+                    <h3>Source Image</h3>
+                    <div class="image-container">
+                        <img id="source-image" src="" alt="Source">
+                        <div id="no-image-placeholder">
+                            <i class="fa-regular fa-image"></i>
+                            <p>No image selected</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated Palette -->
+                <div class="workspace-card palette-result-card">
+                    <h3>Generated Palette</h3>
+                    <div class="generated-palette" id="generated-palette">
+                        <!-- Colors will be injected here -->
+                        <p class="placeholder-text">Select an image to generate palette</p>
+                    </div>
+
+                    <!-- Picked Color Result (Hidden by default) -->
+                    <div id="picked-color-container" class="hidden"
+                        style="margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">
+                        <h4>Picked Color</h4>
+                        <div id="picked-color-display"
+                            style="width: 80px; height: 80px; border-radius: 50%; margin: 10px auto; border: 3px solid #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <p id="picked-color-code"
+                            style="font-family: monospace; font-weight: bold; color: var(--text-dark);"></p>
+                    </div>
+
+                    <div class="palette-actions">
+                        <button class="btn btn-primary" id="action-save-palette">Save This Palette</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Camera Modal -->
+    <div id="camera-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Capture Photo</h3>
+            <video id="camera-feed" autoplay playsinline></video>
+            <canvas id="camera-canvas" hidden></canvas>
+            <button id="capture-btn" class="btn btn-primary">Capture</button>
+        </div>
+    </div>
+
+    <!-- Functions Section -->
+    <section id="functions" class="functions-section bg-light">
+        <div class="container">
+            <h2 class="section-title">Core Functions</h2>
+            <div class="functions-grid">
+                <div class="card function-item interactive-card" id="btn-precision">
+                    <i class="fa-solid fa-eye-dropper"></i>
+                    <div class="function-text">
+                        <h3>Precision Detection</h3>
+                        <p>Detect color from any photo or live camera feed with 99% accuracy.</p>
+                    </div>
+                </div>
+                <div class="card function-item">
+                    <i class="fa-solid fa-tag"></i>
+                    <div class="function-text">
+                        <h3>Smart Naming</h3>
+                        <p>Identify the exact shade name and standardized color code instantly.</p>
+                    </div>
+                </div>
+                <div class="card function-item">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <div class="function-text">
+                        <h3>Match & Contrast</h3>
+                        <p>Get AI-driven suggestions for matching and contrasting colors.</p>
+                    </div>
+                </div>
+                <div class="card function-item">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <div class="function-text">
+                        <h3>Side-by-Side Compare</h3>
+                        <p>Compare multiple shades visually to find the perfect balance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="modules-functions-section">
+        <div class="container">
+            <h2 class="section-title">Functions of Each Module</h2>
+            <p class="section-subtitle">Comprehensive breakdown of our app's core capabilities.</p>
+
+            <div class="modules-grid-detailed">
+                <!-- User Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-user"></i></div>
+                    <h3>User Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> User login and profile handling</li>
+                        <li><i class="fa-solid fa-check"></i> Select colors from image or camera</li>
+                        <li><i class="fa-solid fa-check"></i> Save favorite shades</li>
+                        <li><i class="fa-solid fa-check"></i> View saved color history</li>
+                        <li><i class="fa-solid fa-check"></i> Compare selected colors</li>
+                    </ul>
+                </div>
+
+                <!-- Camera Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-camera-retro"></i></div>
+                    <h3>Camera Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> Capture color using device camera</li>
+                        <li><i class="fa-solid fa-check"></i> Real-time color picking</li>
+                        <li><i class="fa-solid fa-check"></i> Freeze frame for exact color detection</li>
+                        <li><i class="fa-solid fa-check"></i> Send captured image to processing module</li>
+                    </ul>
+                </div>
+
+                <!-- Image Processing Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-images"></i></div>
+                    <h3>Image Processing Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> Analyze uploaded or captured images</li>
+                        <li><i class="fa-solid fa-check"></i> Detect dominant colors and shades</li>
+                        <li><i class="fa-solid fa-check"></i> Extract color pixels</li>
+                        <li><i class="fa-solid fa-check"></i> Remove noise for accurate detection</li>
+                        <li><i class="fa-solid fa-check"></i> Convert colors into digital values</li>
+                    </ul>
+                </div>
+
+                <!-- Palette Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-palette"></i></div>
+                    <h3>Palette Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> Generate matching color palettes</li>
+                        <li><i class="fa-solid fa-check"></i> Suggest complementary & contrasting colors</li>
+                        <li><i class="fa-solid fa-check"></i> Create design-friendly combinations</li>
+                        <li><i class="fa-solid fa-check"></i> Compare multiple shades side by side</li>
+                    </ul>
+                </div>
+
+                <!-- Database Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-database"></i></div>
+                    <h3>Database Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> Store saved colors</li>
+                        <li><i class="fa-solid fa-check"></i> Save HEX and RGB values</li>
+                        <li><i class="fa-solid fa-check"></i> Maintain palette history</li>
+                        <li><i class="fa-solid fa-check"></i> Retrieve saved shades quickly</li>
+                    </ul>
+                </div>
+
+                <!-- AI Processing Module -->
+                <div class="module-detailed-card">
+                    <div class="module-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>AI Processing Module</h3>
+                    <ul class="module-list">
+                        <li><i class="fa-solid fa-check"></i> Intelligent color detection</li>
+                        <li><i class="fa-solid fa-check"></i> Color shade analysis using AI</li>
+                        <li><i class="fa-solid fa-check"></i> Skin tone matching</li>
+                        <li><i class="fa-solid fa-check"></i> Suggest best color combinations</li>
+                        <li><i class="fa-solid fa-check"></i> Calculate exact matching percentage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="steps-section bg-light">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-icon">1</div>
+                    <h3>Capture / Upload</h3>
+                    <p>Take a photo or upload an image from your gallery.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item">
+                    <div class="step-icon">2</div>
+                    <h3>AI Detection</h3>
+                    <p>Our AI analyzes the image to identify dominant colors.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item">
+                    <div class="step-icon">3</div>
+                    <h3>Get Palette</h3>
+                    <p>Receive a complete palette with codes and matching suggestions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Palette Preview Section -->
+    <section id="palette-preview" class="palette-section">
+        <div class="container">
+            <h2 class="section-title">Saved Favorites</hz2>
+                <div class="palette-grid" id="favorites-container">
+                    <!-- Favorites will be injected here via JS -->
+                    <p class="placeholder-text" style="grid-column: 1/-1; text-align: center;">No favorites
+                        saved
+                        yet.</p>
+                </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="container cta-content">
+            <h2>Ready to Find Your Perfect Match?</h2>
+            <p>Join thousands of designers creating stunning color schemes today.</p>
+            <button id="btn-start-now" class="btn btn-white">Start Matching Colors Now</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>ChromaMatch</h3>
+                    <p>The smartest AI color companion for your design needs.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How it Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ChromaMatch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hidden Inputs -->
+    <input type="file" id="file-input" accept="image/*" hidden>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
